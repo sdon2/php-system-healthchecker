@@ -22,7 +22,7 @@ class SwapHealthCheck extends HealthCheck implements IHealthCheck
         //
     }
 
-    public function getComparer()
+    public function isThresholdFailed()
     {
         //
     }

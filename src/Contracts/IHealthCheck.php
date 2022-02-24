@@ -10,7 +10,7 @@ interface IHealthCheck
 
     public function getThresholdValue();
 
-    public function getComparer();
+    public function isThresholdFailed();
 
     public function getReport();
 }

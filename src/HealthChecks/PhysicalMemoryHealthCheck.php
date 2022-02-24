@@ -23,15 +23,19 @@ class PhysicalMemoryHealthCheck extends HealthCheck implements IHealthCheck
         return intval($_ENV['PHYSICAL_MEMORY_THRESHOLD']);
     }
 
-    public function getComparer()
+    public function isThresholdFailed()
     {
-        return $this->getActualValue() < $this->getThresholdValue();
+        $threshold = $this->getThresholdValue();
+        $free = $this->getActualValue();
+
+        // If free_memory < threshold return true
+        return  $free < $threshold;
     }
 
     public function getReport()
     {
         $result = $this->getResult();
-        $output = "Total \t Used \t Free \t %\n";
+        $output = "\nTotal \t Used \t Free \t %\n";
         return $output . sprintf("%dMB \t %dMB \t %dMB \t %d %%\n", $result['total'], $result['used'], $result['free'], $this->getActualValue());
     }
 

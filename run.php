@@ -21,8 +21,8 @@ foreach ($checks as $check) {
      */
     $class = new $check();
 
-    if (!$class->getComparer()) {
-        echo $class->getHealthCheckName() . " exceeded ThresHold";
+    if ($class->isThresholdFailed()) {
+        echo $class->getHealthCheckName() . " exceeded ThresHold\n";
         echo $class->getReport();
     }
 }
