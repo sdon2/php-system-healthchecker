@@ -20,5 +20,5 @@ foreach ($checks as $check) {
      * @var IHealthCheck $class
      */
     $class = new $check();
-    $class->getReport();
+    echo sprintf("Total:%d, Used:%d, Free:%d\n", $class->getTotalValue(), $class->getUsedValue(), $class->getActualValue());
 }
