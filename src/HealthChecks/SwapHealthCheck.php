@@ -6,29 +6,63 @@ use HealthChecker\Contracts\IHealthCheck;
 
 class SwapHealthCheck extends HealthCheck implements IHealthCheck
 {
-
     public function getHealthCheckName()
     {
-        return "Swap Health Check";
+        return "Swap Memory";
     }
 
+    // Actual value
     public function getActualValue()
     {
-        //
+        return ($this->getFreeMemory() * 100) / $this->getTotalMemory();
     }
 
+    // Expected value
     public function getThresholdValue()
     {
-        //
+        return intval($_ENV['SWAP_MEMORY_THRESHOLD']);
     }
 
     public function isThresholdFailed()
     {
-        //
+        $threshold = $this->getThresholdValue();
+        $free = $this->getActualValue();
+
+        // If free_memory < threshold return true
+        return  $free < $threshold;
     }
 
     public function getReport()
     {
-        //
+        $result = $this->getResult();
+        $output = "\nTotal \t Used \t Free \t %\n";
+        return $output . sprintf("%dMB \t %dMB \t %dMB \t %d %%\n", $result['total'], $result['used'], $result['free'], $this->getActualValue());
+    }
+
+    protected function getResult()
+    {
+        $total_memory = $this->getTotalMemory();
+        $used_memory = $this->getUsedMemory();
+        $free_memory = $this->getFreeMemory();
+
+        return ['total' => $total_memory, 'used' => $used_memory, 'free' => $free_memory];
+    }
+
+    // Total Memory
+    protected function getTotalMemory()
+    {
+        return $this->getCommandOutput("free -m | tail -1 | awk '{print $2}'");
+    }
+
+    // Used memory
+    public function getUsedMemory()
+    {
+        return $this->getCommandOutput("free -m | tail -1 | awk '{print $3}'");
+    }
+
+    // Free memory
+    protected function getFreeMemory()
+    {
+        return $this->getCommandOutput("free -m | tail -1 | awk '{print $4}'");
     }
 }
