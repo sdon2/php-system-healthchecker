@@ -32,7 +32,7 @@ class PhysicalMemoryHealthCheck extends HealthCheck implements IHealthCheck
     {
         $result = $this->getResult();
         $output = "Total \t Used \t Free \t %\n";
-        return $output . sprintf("%d MB \t %d MB \t %d MB \t %d %\n", $result['total'], $result['used'], $result['free'], );
+        return $output . sprintf("%dMB \t %dMB \t %dMB \t %d %%\n", $result['total'], $result['used'], $result['free'], $this->getActualValue());
     }
 
     protected function getResult()
