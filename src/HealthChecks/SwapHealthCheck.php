@@ -8,11 +8,28 @@ use Symfony\Component\Process\Process;
 
 class SwapHealthCheck implements IHealthCheck
 {
-    public function getHealthCheckName() { }
+    public function getTotalValue()
+    {
+        //
+    }
 
-    public function getActualValue() { }
+    public function getHealthCheckName()
+    {
+        //
+    }
 
-    public function getThresholdValue() { }
+    public function getActualValue()
+    {
+        //
+    }
 
-    public function getReport() { }
+    public function getThresholdValue()
+    {
+        //
+    }
+
+    public function getReport()
+    {
+        //
+    }
 }

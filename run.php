@@ -20,5 +20,5 @@ foreach ($checks as $check) {
      * @var IHealthCheck $class
      */
     $class = new $check();
-    echo $class->getActualValue();
+    $class->getReport();
 }
