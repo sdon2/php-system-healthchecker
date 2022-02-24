@@ -3,19 +3,13 @@
 namespace HealthChecker\HealthChecks;
 
 use HealthChecker\Contracts\IHealthCheck;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
-class SwapHealthCheck implements IHealthCheck
+class SwapHealthCheck extends HealthCheck implements IHealthCheck
 {
-    public function getTotalValue()
-    {
-        //
-    }
 
     public function getHealthCheckName()
     {
-        //
+        return "Swap Health Check";
     }
 
     public function getActualValue()
@@ -24,6 +18,11 @@ class SwapHealthCheck implements IHealthCheck
     }
 
     public function getThresholdValue()
+    {
+        //
+    }
+
+    public function getComparer()
     {
         //
     }

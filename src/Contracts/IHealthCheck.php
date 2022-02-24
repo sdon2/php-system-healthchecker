@@ -6,11 +6,11 @@ interface IHealthCheck
 {
     public function getHealthCheckName();
 
-    public function getTotalValue();
-
     public function getActualValue();
 
     public function getThresholdValue();
+
+    public function getComparer();
 
     public function getReport();
 }

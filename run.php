@@ -20,5 +20,9 @@ foreach ($checks as $check) {
      * @var IHealthCheck $class
      */
     $class = new $check();
-    echo sprintf("Total:%d, Used:%d, Free:%d\n", $class->getTotalValue(), $class->getUsedValue(), $class->getActualValue());
+
+    if (!$class->getComparer()) {
+        echo $class->getHealthCheckName() . " exceeded ThresHold";
+        echo $class->getReport();
+    }
 }
