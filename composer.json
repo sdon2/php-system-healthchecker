@@ -17,9 +17,6 @@
     "autoload": {
         "psr-4": {
             "HealthChecker\\": "src/"
-        },
-        "files": [
-            "src/config.php"
-        ]
+        }
     }
 }
