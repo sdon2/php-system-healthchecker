@@ -14,7 +14,7 @@ class PhysicalMemoryHealthCheck extends HealthCheck implements IHealthCheck
     // Actual value
     public function getActualValue()
     {
-        return ($this->getFreeMemory() * 100) / $this->getTotalMemory();
+        return ($this->getUsedMemory() * 100) / $this->getTotalMemory();
     }
 
     // Expected value
@@ -26,16 +26,16 @@ class PhysicalMemoryHealthCheck extends HealthCheck implements IHealthCheck
     public function isThresholdFailed()
     {
         $threshold = $this->getThresholdValue();
-        $free = $this->getActualValue();
+        $used = $this->getActualValue();
 
-        // If free_memory < threshold return true
-        return  $free < $threshold;
+        // If used > threshold return true
+        return  $used > $threshold;
     }
 
     public function getReport()
     {
         $result = $this->getResult();
-        $output = "\nTotal \t Used \t Free \t %\n";
+        $output = "\nTotal \t Used \t Free \t Utilisation %\n";
         return $output . sprintf("%dMB \t %dMB \t %dMB \t %d %%\n", $result['total'], $result['used'], $result['free'], $this->getActualValue());
     }
 

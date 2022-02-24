@@ -33,18 +33,18 @@ foreach ($checks as $check) {
 
         $test_passed = false;
     }
+}
 
-    if ($test_passed) {
-        echo "\nAll tests passed!!!\n";
-        exit(0);
+if ($test_passed) {
+    echo "\nAll tests passed!!!\n";
+    exit(0);
+} else {
+    if ($_ENV['ENABLE_EMAIL'] != 'false') {
+        echo "\nSome of the Tests failed and Email Triggered!!!\n";
+        Mailer::sendReport($report);
     } else {
-        if ($_ENV['ENABLE_EMAIL'] != 'false') {
-            echo "\nSome of the Tests failed and Email Triggered!!!\n";
-            Mailer::sendReport($report);
-        } else {
-            echo "\nSome of the Tests Failed!!!\n";
-            echo $report;
-        }
-        exit(-1);
+        echo "\nSome of the Tests Failed!!!\n";
+        echo $report;
     }
+    exit(-1);
 }
