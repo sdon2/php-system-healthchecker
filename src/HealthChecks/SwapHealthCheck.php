@@ -3,6 +3,7 @@
 namespace HealthChecker\HealthChecks;
 
 use HealthChecker\Contracts\IHealthCheck;
+use LucidFrame\Console\ConsoleTable;
 
 class SwapHealthCheck extends HealthCheck implements IHealthCheck
 {
@@ -20,23 +21,35 @@ class SwapHealthCheck extends HealthCheck implements IHealthCheck
     // Expected value
     public function getThresholdValue()
     {
-        return intval($_ENV['SWAP_MEMORY_THRESHOLD']);
+        return intval($_ENV['PHYSICAL_MEMORY_THRESHOLD']);
     }
 
-    public function isThresholdFailed()
+    public function isCheckPassed()
     {
         $threshold = $this->getThresholdValue();
         $used = $this->getActualValue();
 
-        // If used > threshold return true
-        return  $used > $threshold;
+        // If used < threshold return true
+        return  $used < $threshold;
     }
 
     public function getReport()
     {
-        $result = $this->getResult();
-        $output = "\nTotal \t Used \t Free \t Utilisation %\n";
-        return $output . sprintf("%dMB \t %dMB \t %dMB \t %d %%\n", $result['total'], $result['used'], $result['free'], $this->getActualValue());
+        $data = $this->getResult();
+        $data['title'] = $this->getHealthCheckName() . " threshold failed!!";
+        $data['expected'] = $this->getThresholdValue();
+        $data['utilisation'] = $this->getActualValue();
+
+        if ($this->isHtmlReport()) {
+            return $this->view('memory-health', $data);
+        } else {
+            $output = "\n" . $data['title'] . "\n";
+            $table = new ConsoleTable();
+            $output .= $table->setHeaders(['Total', 'Used', 'Free', 'Expected', 'Utilisation'])
+                ->addRow([$data['total'] . "MB", $data['used'] . "MB", $data['free'] . "MB", $data['expected'] . "%", $data['utilisation'] . "%"])
+                ->getTable();
+            return $output;
+        }
     }
 
     protected function getResult()
@@ -63,6 +76,7 @@ class SwapHealthCheck extends HealthCheck implements IHealthCheck
     // Free memory
     protected function getFreeMemory()
     {
-        return $this->getCommandOutput("free -m | tail -1 | awk '{print $4}'");
+        //return $this->getCommandOutput("free -m | tail -1 | awk '{print $4}'");
+        return $this->getTotalMemory() - $this->getUsedMemory();
     }
 }
