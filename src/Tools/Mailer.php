@@ -18,13 +18,16 @@ class Mailer
             ->to($_ENV['EMAIL_FROM'])
             ->subject($_ENV['EMAIL_SUBJECT'] . " from " . $_ENV['SERVER_NAME']);
 
+        $content = "";
         foreach ($reports as $report) {
             if ($report['html'] ?? false) {
-                $email = $email->html($report['report']);
+                $content .= $report['report'];
             } else {
-                $email = $email->text($report['report']);
+                $content .= nl2br(htmlspecialchars($report['report']));
             }
         }
+
+        $email->html($content);
 
         $mailer->send($email);
     }
