@@ -23,7 +23,7 @@ class Mailer
             if ($report['html'] ?? false) {
                 $content .= $report['report'];
             } else {
-                $content .= nl2br(htmlspecialchars($report['report']));
+                $content .= nl2br(str_replace([" ", "\t"], ['&nbsp;', '&nbsp;&nbsp;&nbsp;&nbsp;'], htmlspecialchars($report['report'])));
             }
         }
 
