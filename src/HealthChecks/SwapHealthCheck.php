@@ -91,6 +91,6 @@ class SwapHealthCheck extends HealthCheck implements IHealthCheck
     // Free memory
     protected function getFreeMemory()
     {
-        //return $this->getCommandOutput("free -m | head -2 | tail -1| awk '{print $4}'");
+        //return $this->getCommandOutput("free -m | tail -1 | awk '{print $4}'");
     }
 }
